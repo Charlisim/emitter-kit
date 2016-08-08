@@ -21,31 +21,31 @@ class ChangeListenerTests: XCTestCase {
     var oldValue: CGRect!
   
     view.once("bounds") { (change: Change<NSValue>) in
-      XCTAssertTrue(change.oldValue.CGRectValue() == oldValue, "Change.oldValue has the wrong value")
-      XCTAssertTrue(change.newValue.CGRectValue() == self.view.bounds, "Change.newValue has the wrong value")
+      XCTAssertTrue(change.oldValue.cgRectValue() == oldValue, "Change.oldValue has the wrong value")
+      XCTAssertTrue(change.newValue.cgRectValue() == self.view.bounds, "Change.newValue has the wrong value")
       self.calls += 1
     }
     
     oldValue = view.bounds
-    view.bounds = CGRectMake(0, 0, 100, 100)
+    view.bounds = CGRect(x:0, y:0, width:100, height:100)
     
     oldValue = view.bounds
-    view.bounds = CGRectZero
+    view.bounds = CGRect.zero
     
     XCTAssertTrue(calls == 1, "Single-use ChangeListener did not stop listening after being executed")
   }
   
   func testOn () {
     listener = view.on("backgroundColor") { (change: Change<UIColor>) in self.calls += 1 }
-    view.backgroundColor = UIColor.purpleColor()
-    view.backgroundColor = UIColor.redColor()
+    view.backgroundColor = UIColor.purple()
+    view.backgroundColor = UIColor.red()
     
     XCTAssertTrue(calls == 2, "ChangeListener stopped listening after being executed once")
   }
   
   func testOnDeinit () {
     view.on("backgroundColor") { [unowned self] (change: Change<UIColor>) in self.calls += 1 }
-    view.backgroundColor = UIColor.purpleColor()
+    view.backgroundColor = UIColor.purple()
     
     XCTAssertTrue(calls == 0, "ChangeListener did not stop listening on deinit")
   }

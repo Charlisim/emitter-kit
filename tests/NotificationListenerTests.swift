@@ -5,7 +5,7 @@ import EmitterKit
 class NotificationListenerTests: XCTestCase {
   
   var listener: Listener!
-  var event: Notification!
+  var event: EmitterKit.Notification!
   var calls = 0
 
   override func setUp() {
